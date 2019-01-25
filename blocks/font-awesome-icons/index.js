@@ -172,7 +172,7 @@ registerBlockType( 'themeisle-blocks/font-awesome-icons', {
 						afterIcon="editor-textcolor"
 					/>
 					<RangeControl
-						label={ __( 'Padding' ) }
+						label={ __( 'Inner Space' ) }
 						value={ props.attributes.padding || '' }
 						initialPosition={ 5 }
 						onChange={ changePadding }
@@ -182,7 +182,7 @@ registerBlockType( 'themeisle-blocks/font-awesome-icons', {
 						afterIcon="plus"
 					/>
 					<RangeControl
-						label={ __( 'Margin' ) }
+						label={ __( 'Outer Space' ) }
 						value={ props.attributes.margin || '' }
 						initialPosition={ 5 }
 						onChange={ changeMargin }
@@ -204,7 +204,7 @@ registerBlockType( 'themeisle-blocks/font-awesome-icons', {
 						{
 							value: props.attributes.textColor,
 							onChange: changeTextColor,
-							label: __( 'Icon Color' )
+							label: __( 'Text Color' )
 						},
 						{
 							value: props.attributes.borderColor,

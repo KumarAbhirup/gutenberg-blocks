@@ -18,14 +18,11 @@ const {
 const {
 	Button,
 	Dashicon,
-	Dropdown,
 	DropdownMenu,
-	IconButton,
 	PanelBody,
 	RangeControl,
 	SVG,
-	ToggleControl,
-	Toolbar
+	ToggleControl
 } = wp.components;
 
 const {
@@ -89,12 +86,6 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 			type: 'string'
 		},
 		align: {
-			type: 'string'
-		},
-		alignTablet: {
-			type: 'string'
-		},
-		alignMobile: {
 			type: 'string'
 		},
 		headingColor: {
@@ -327,7 +318,6 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 		withState({
 			tab: 'style',
 			fontSizeViewType: 'desktop',
-			alignmentViewType: 'desktop',
 			paddingViewType: 'desktop',
 			marginViewType: 'desktop'
 		}),
@@ -342,7 +332,6 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 	])( ({
 		tab,
 		fontSizeViewType,
-		alignmentViewType,
 		paddingViewType,
 		marginViewType,
 		setState,
@@ -358,8 +347,6 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 			content,
 			tag,
 			align,
-			alignTablet,
-			alignMobile,
 			headingColor,
 			highlightColor,
 			highlightBackground,
@@ -410,7 +397,7 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 			marginBottomMobile
 		} = props.attributes;
 
-		if ( id === undefined || id.substr( id.length - 8 ) !== props.clientId.substr( 0, 8 ) ) {
+		if ( id === undefined ) {
 			const instanceId = `wp-block-themeisle-blocks-advanced-heading-${ props.clientId.substr( 0, 8 ) }`;
 			props.setAttributes({ id: instanceId });
 		}
@@ -423,10 +410,6 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 
 		const changeFontSizeViewType = value => {
 			setState({ fontSizeViewType: value });
-		};
-
-		const changeAlignmentViewType = value => {
-			setState({ alignmentViewType: value });
 		};
 
 		const changePaddingViewType = value => {
@@ -483,6 +466,10 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 			}
 		};
 
+		const changeAlignment = value => {
+			props.setAttributes({ align: value });
+		};
+
 		const changeHeadingColor = value => {
 			props.setAttributes({ headingColor: value });
 		};
@@ -496,14 +483,16 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 		};
 
 		const changeFontSize = value => {
-			if ( 'desktop' === fontSizeViewType ) {
-				props.setAttributes({ fontSize: value });
-			}
-			if ( 'tablet' === fontSizeViewType ) {
-				props.setAttributes({ fontSizeTablet: value });
-			}
-			if ( 'mobile' === fontSizeViewType ) {
-				props.setAttributes({ fontSizeMobile: value });
+			if ( 1 <= value && 200 >= value ) {
+				if ( 'desktop' === fontSizeViewType ) {
+					props.setAttributes({ fontSize: value });
+				}
+				if ( 'tablet' === fontSizeViewType ) {
+					props.setAttributes({ fontSizeTablet: value });
+				}
+				if ( 'mobile' === fontSizeViewType ) {
+					props.setAttributes({ fontSizeMobile: value });
+				}
 			}
 		};
 
@@ -527,38 +516,6 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 
 		getFontSize = getFontSize();
 
-		const changeAlignment = value => {
-			if ( 'desktop' === alignmentViewType ) {
-				props.setAttributes({ align: value });
-			}
-			if ( 'tablet' === alignmentViewType ) {
-				props.setAttributes({ alignTablet: value });
-			}
-			if ( 'mobile' === alignmentViewType ) {
-				props.setAttributes({ alignMobile: value });
-			}
-		};
-
-		let getAlignment = () => {
-			let value;
-
-			if ( 'desktop' === alignmentViewType ) {
-				value = align;
-			}
-
-			if ( 'tablet' === alignmentViewType ) {
-				value = alignTablet;
-			}
-
-			if ( 'mobile' === alignmentViewType ) {
-				value = alignMobile;
-			}
-
-			return value;
-		};
-
-		getAlignment = getAlignment();
-
 		const changeFontFamily = value => {
 			props.setAttributes({
 				fontFamily: value,
@@ -580,11 +537,15 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 		};
 
 		const changeLineHeight = value => {
-			props.setAttributes({ lineHeight: value });
+			if ( 0 <= value && 200 >= value ) {
+				props.setAttributes({ lineHeight: value });
+			}
 		};
 
 		const changeLetterSpacing = value => {
-			props.setAttributes({ letterSpacing: value });
+			if ( -50 <= value && 100 >= value ) {
+				props.setAttributes({ letterSpacing: value });
+			}
 		};
 
 		const changeTextShadowColor = value => {
@@ -624,62 +585,72 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 		};
 
 		const changePadding = value => {
-			if ( 'desktop' === paddingViewType ) {
-				props.setAttributes({ padding: value });
-			}
-			if ( 'tablet' === paddingViewType ) {
-				props.setAttributes({ paddingTablet: value });
-			}
-			if ( 'mobile' === paddingViewType ) {
-				props.setAttributes({ paddingMobile: value });
+			if ( 0 <= value && 500 >= value ) {
+				if ( 'desktop' === paddingViewType ) {
+					props.setAttributes({ padding: value });
+				}
+				if ( 'tablet' === paddingViewType ) {
+					props.setAttributes({ paddingTablet: value });
+				}
+				if ( 'mobile' === paddingViewType ) {
+					props.setAttributes({ paddingMobile: value });
+				}
 			}
 		};
 
 		const changePaddingTop = value => {
-			if ( 'desktop' === paddingViewType ) {
-				props.setAttributes({ paddingTop: value });
-			}
-			if ( 'tablet' === paddingViewType ) {
-				props.setAttributes({ paddingTopTablet: value });
-			}
-			if ( 'mobile' === paddingViewType ) {
-				props.setAttributes({ paddingTopMobile: value });
+			if ( 0 <= value && 500 >= value ) {
+				if ( 'desktop' === paddingViewType ) {
+					props.setAttributes({ paddingTop: value });
+				}
+				if ( 'tablet' === paddingViewType ) {
+					props.setAttributes({ paddingTopTablet: value });
+				}
+				if ( 'mobile' === paddingViewType ) {
+					props.setAttributes({ paddingTopMobile: value });
+				}
 			}
 		};
 
 		const changePaddingRight = value => {
-			if ( 'desktop' === paddingViewType ) {
-				props.setAttributes({ paddingRight: value });
-			}
-			if ( 'tablet' === paddingViewType ) {
-				props.setAttributes({ paddingRightTablet: value });
-			}
-			if ( 'mobile' === paddingViewType ) {
-				props.setAttributes({ paddingRightMobile: value });
+			if ( 0 <= value && 500 >= value ) {
+				if ( 'desktop' === paddingViewType ) {
+					props.setAttributes({ paddingRight: value });
+				}
+				if ( 'tablet' === paddingViewType ) {
+					props.setAttributes({ paddingRightTablet: value });
+				}
+				if ( 'mobile' === paddingViewType ) {
+					props.setAttributes({ paddingRightMobile: value });
+				}
 			}
 		};
 
 		const changePaddingBottom = value => {
-			if ( 'desktop' === paddingViewType ) {
-				props.setAttributes({ paddingBottom: value });
-			}
-			if ( 'tablet' === paddingViewType ) {
-				props.setAttributes({ paddingBottomTablet: value });
-			}
-			if ( 'mobile' === paddingViewType ) {
-				props.setAttributes({ paddingBottomMobile: value });
+			if ( 0 <= value && 500 >= value ) {
+				if ( 'desktop' === paddingViewType ) {
+					props.setAttributes({ paddingBottom: value });
+				}
+				if ( 'tablet' === paddingViewType ) {
+					props.setAttributes({ paddingBottomTablet: value });
+				}
+				if ( 'mobile' === paddingViewType ) {
+					props.setAttributes({ paddingBottomMobile: value });
+				}
 			}
 		};
 
 		const changePaddingLeft = value => {
-			if ( 'desktop' === paddingViewType ) {
-				props.setAttributes({ paddingLeft: value });
-			}
-			if ( 'tablet' === paddingViewType ) {
-				props.setAttributes({ paddingLeftTablet: value });
-			}
-			if ( 'mobile' === paddingViewType ) {
-				props.setAttributes({ paddingLeftMobile: value });
+			if ( 0 <= value && 500 >= value ) {
+				if ( 'desktop' === paddingViewType ) {
+					props.setAttributes({ paddingLeft: value });
+				}
+				if ( 'tablet' === paddingViewType ) {
+					props.setAttributes({ paddingLeftTablet: value });
+				}
+				if ( 'mobile' === paddingViewType ) {
+					props.setAttributes({ paddingLeftMobile: value });
+				}
 			}
 		};
 
@@ -696,38 +667,44 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 		};
 
 		const changeMargin = value => {
-			if ( 'desktop' === marginViewType ) {
-				props.setAttributes({ margin: value });
-			}
-			if ( 'tablet' === marginViewType ) {
-				props.setAttributes({ marginTablet: value });
-			}
-			if ( 'mobile' === marginViewType ) {
-				props.setAttributes({ marginMobile: value });
+			if ( -500 <= value && 500 >= value ) {
+				if ( 'desktop' === marginViewType ) {
+					props.setAttributes({ margin: value });
+				}
+				if ( 'tablet' === marginViewType ) {
+					props.setAttributes({ marginTablet: value });
+				}
+				if ( 'mobile' === marginViewType ) {
+					props.setAttributes({ marginMobile: value });
+				}
 			}
 		};
 
 		const changeMarginTop = value => {
-			if ( 'desktop' === marginViewType ) {
-				props.setAttributes({ marginTop: value });
-			}
-			if ( 'tablet' === marginViewType ) {
-				props.setAttributes({ marginTopTablet: value });
-			}
-			if ( 'mobile' === marginViewType ) {
-				props.setAttributes({ marginTopMobile: value });
+			if ( -500 <= value && 500 >= value ) {
+				if ( 'desktop' === marginViewType ) {
+					props.setAttributes({ marginTop: value });
+				}
+				if ( 'tablet' === marginViewType ) {
+					props.setAttributes({ marginTopTablet: value });
+				}
+				if ( 'mobile' === marginViewType ) {
+					props.setAttributes({ marginTopMobile: value });
+				}
 			}
 		};
 
 		const changeMarginBottom = value => {
-			if ( 'desktop' === marginViewType ) {
-				props.setAttributes({ marginBottom: value });
-			}
-			if ( 'tablet' === marginViewType ) {
-				props.setAttributes({ marginBottomTablet: value });
-			}
-			if ( 'mobile' === marginViewType ) {
-				props.setAttributes({ marginBottomMobile: value });
+			if ( -500 <= value && 500 >= value ) {
+				if ( 'desktop' === marginViewType ) {
+					props.setAttributes({ marginBottom: value });
+				}
+				if ( 'tablet' === marginViewType ) {
+					props.setAttributes({ marginBottomTablet: value });
+				}
+				if ( 'mobile' === marginViewType ) {
+					props.setAttributes({ marginBottomMobile: value });
+				}
 			}
 		};
 
@@ -739,7 +716,6 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 			};
 
 			stylesheet = {
-				textAlign: align,
 				paddingTop: 'linked' === paddingType ? `${ padding }px` : `${ paddingTop }px`,
 				paddingRight: 'linked' === paddingType ? `${ padding }px` : `${ paddingRight }px`,
 				paddingBottom: 'linked' === paddingType ? `${ padding }px` : `${ paddingBottom }px`,
@@ -755,7 +731,6 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 			};
 
 			stylesheet = {
-				textAlign: alignTablet,
 				paddingTop: 'linked' === paddingTypeTablet ? `${ paddingTablet }px` : `${ paddingTopTablet }px`,
 				paddingRight: 'linked' === paddingTypeTablet ? `${ paddingTablet }px` : `${ paddingRightTablet }px`,
 				paddingBottom: 'linked' === paddingTypeTablet ? `${ paddingTablet }px` : `${ paddingBottomTablet }px`,
@@ -771,7 +746,6 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 			};
 
 			stylesheet = {
-				textAlign: alignMobile,
 				paddingTop: 'linked' === paddingTypeMobile ? `${ paddingMobile }px` : `${ paddingTopMobile }px`,
 				paddingRight: 'linked' === paddingTypeMobile ? `${ paddingMobile }px` : `${ paddingRightMobile }px`,
 				paddingBottom: 'linked' === paddingTypeMobile ? `${ paddingMobile }px` : `${ paddingBottomMobile }px`,
@@ -788,10 +762,11 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 		}
 
 		const style = {
+			textAlign: align,
 			color: headingColor,
 			...fontSizeStyle,
 			fontFamily: undefined !== fontFamily && fontFamily,
-			fontWeight: 'regular' === fontVariant ? 'normal' : fontVariant,
+			fontWeight: fontVariant,
 			fontStyle: fontStyle,
 			textTransform: textTransform,
 			lineHeight: lineHeight && `${ lineHeight }px`,
@@ -870,59 +845,11 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 						] }
 					/>
 
-					<Toolbar
-						className="wp-themesiel-blocks-advanced-heading-components-toolbar"
-					>
-						<Dropdown
-							contentClassName="wp-themesiel-blocks-advanced-heading-popover-content"
-							position="bottom center"
-							renderToggle={ ({ isOpen, onToggle }) => (
-								<IconButton
-									className="components-dropdown-menu__toggle"
-									icon={ 'editor-textcolor' }
-									onClick={ onToggle }
-									aria-haspopup="true"
-									aria-expanded={ isOpen }
-									label={ __( 'Typography Settings' ) }
-									tooltip={ __( 'Typography Settings' ) }
-								>
-									<span className="components-dropdown-menu__indicator" />
-								</IconButton>
-							) }
-							renderContent={ () => (
-								<Fragment>
-									<GoogleFontsControl
-										label={ __( 'Font Family' ) }
-										value={ fontFamily }
-										onChangeFontFamily={ changeFontFamily }
-										isSelect={ true }
-										valueVariant={ fontVariant }
-										onChangeFontVariant={ changeFontVariant }
-										valueStyle={ fontStyle }
-										onChangeFontStyle={ changeFontStyle }
-										valueTransform={ textTransform }
-										onChangeTextTransform={ changeTextTransform }
-									/>
-
-									<RangeControl
-										label={ __( 'Line Height' ) }
-										value={ lineHeight }
-										onChange={ changeLineHeight }
-										min={ 0 }
-										max={ 200 }
-									/>
-
-									<RangeControl
-										label={ __( 'Letter Spacing' ) }
-										value={ letterSpacing }
-										onChange={ changeLetterSpacing }
-										min={ -50 }
-										max={ 100 }
-									/>
-								</Fragment>
-							) }
-						/>
-					</Toolbar>
+					<AlignmentToolbar
+						value={ align }
+						isCollapsed={ true }
+						onChange={ changeAlignment }
+					/>
 				</BlockControls>
 
 				<InspectorControls className="wp-block-themeisle-blocks-advanced-heading-inspector">
@@ -960,7 +887,7 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 
 						<Fragment>
 							<PanelBody
-								title={ __( 'General Settings' ) }
+								title={ __( 'Color Settings' ) }
 							>
 								<Fragment>
 									<p>{ __( 'Heading Color' ) }</p>
@@ -979,20 +906,10 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 								>
 									<RangeControl
 										value={ getFontSize || '' }
+										allowReset={ true }
 										onChange={ changeFontSize }
 										min={ 1 }
-										max={ 500 }
-									/>
-								</ResponsiveControl>
-
-								<ResponsiveControl
-									label={ 'Alignment' }
-									view={ alignmentViewType }
-									changeViewType={ changeAlignmentViewType }
-								>
-									<AlignmentToolbar
-										value={ getAlignment }
-										onChange={ changeAlignment }
+										max={ 200 }
 									/>
 								</ResponsiveControl>
 							</PanelBody>
@@ -1016,6 +933,7 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 								<RangeControl
 									label={ __( 'Line Height' ) }
 									value={ lineHeight }
+									allowReset={ true }
 									onChange={ changeLineHeight }
 									min={ 0 }
 									max={ 200 }
@@ -1024,13 +942,14 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 								<RangeControl
 									label={ __( 'Letter Spacing' ) }
 									value={ letterSpacing }
+									allowReset={ true }
 									onChange={ changeLetterSpacing }
 									min={ -50 }
 									max={ 100 }
 								/>
 
 								<ToggleControl
-									label={ 'Shadow Properties' }
+									label={ 'Text Shadow' }
 									checked={ textShadow }
 									onChange={ changeTextShadow }
 								/>
@@ -1049,7 +968,7 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 										</Fragment>
 
 										<ControlPanelControl
-											label={ 'Shadow Properties' }
+											label={ 'Text Shadow' }
 										>
 											<RangeControl
 												label={ __( 'Opacity' ) }
@@ -1270,6 +1189,7 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 			id,
 			content,
 			tag,
+			align,
 			headingColor,
 			fontFamily,
 			fontVariant,
@@ -1294,9 +1214,10 @@ registerBlockType( 'themeisle-blocks/advanced-heading', {
 		}
 
 		const style = {
+			textAlign: align,
 			color: headingColor,
 			fontFamily: fontFamily,
-			fontWeight: 'regular' === fontVariant ? 'normal' : fontVariant,
+			fontWeight: fontVariant,
 			fontStyle: fontStyle,
 			textTransform: textTransform,
 			lineHeight: lineHeight && `${ lineHeight }px`,

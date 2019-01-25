@@ -133,15 +133,15 @@ registerBlockType( 'themeisle-blocks/advanced-column', {
 		},
 		marginType: {
 			type: 'string',
-			default: 'unlinked'
+			default: 'linked'
 		},
 		marginTypeTablet: {
 			type: 'string',
-			default: 'unlinked'
+			default: 'linked'
 		},
 		marginTypeMobile: {
 			type: 'string',
-			default: 'unlinked'
+			default: 'linked'
 		},
 		margin: {
 			type: 'number',
@@ -167,18 +167,6 @@ registerBlockType( 'themeisle-blocks/advanced-column', {
 			type: 'number',
 			default: 20
 		},
-		marginRight: {
-			type: 'number',
-			default: 0
-		},
-		marginRightTablet: {
-			type: 'number',
-			default: 0
-		},
-		marginRightMobile: {
-			type: 'number',
-			default: 0
-		},
 		marginBottom: {
 			type: 'number',
 			default: 20
@@ -190,18 +178,6 @@ registerBlockType( 'themeisle-blocks/advanced-column', {
 		marginBottomMobile: {
 			type: 'number',
 			default: 20
-		},
-		marginLeft: {
-			type: 'number',
-			default: 0
-		},
-		marginLeftTablet: {
-			type: 'number',
-			default: 0
-		},
-		marginLeftMobile: {
-			type: 'number',
-			default: 0
 		},
 		backgroundType: {
 			type: 'string',
@@ -413,15 +389,9 @@ registerBlockType( 'themeisle-blocks/advanced-column', {
 			marginTop,
 			marginTopTablet,
 			marginTopMobile,
-			marginRight,
-			marginRightTablet,
-			marginRightMobile,
 			marginBottom,
 			marginBottomTablet,
 			marginBottomMobile,
-			marginLeft,
-			marginLeftTablet,
-			marginLeftMobile,
 			backgroundType,
 			backgroundColor,
 			backgroundImageID,
@@ -460,7 +430,7 @@ registerBlockType( 'themeisle-blocks/advanced-column', {
 			columnsHTMLTag
 		} = props.attributes;
 
-		if ( id === undefined || id.substr( id.length - 8 ) !== props.clientId.substr( 0, 8 ) ) {
+		if ( id === undefined ) {
 			const instanceId = `wp-block-themeisle-blocks-advanced-column-${ props.clientId.substr( 0, 8 ) }`;
 			props.setAttributes({ id: instanceId });
 		}
@@ -482,9 +452,7 @@ registerBlockType( 'themeisle-blocks/advanced-column', {
 				paddingBottom: 'linked' === paddingType ? `${ padding }px` : `${ paddingBottom }px`,
 				paddingLeft: 'linked' === paddingType ? `${ padding }px` : `${ paddingLeft }px`,
 				marginTop: 'linked' === marginType ? `${ margin }px` : `${ marginTop }px`,
-				marginRight: 'linked' === marginType ? `${ margin }px` : `${ marginRight }px`,
-				marginBottom: 'linked' === marginType ? `${ margin }px` : `${ marginBottom }px`,
-				marginLeft: 'linked' === marginType ? `${ margin }px` : `${ marginLeft }px`
+				marginBottom: 'linked' === marginType ? `${ margin }px` : `${ marginBottom }px`
 			};
 		}
 
@@ -495,9 +463,7 @@ registerBlockType( 'themeisle-blocks/advanced-column', {
 				paddingBottom: 'linked' === paddingTypeTablet ? `${ paddingTablet }px` : `${ paddingBottomTablet }px`,
 				paddingLeft: 'linked' === paddingTypeTablet ? `${ paddingTablet }px` : `${ paddingLeftTablet }px`,
 				marginTop: 'linked' === marginTypeTablet ? `${ marginTablet }px` : `${ marginTopTablet }px`,
-				marginRight: 'linked' === marginTypeTablet ? `${ marginTablet }px` : `${ marginRightTablet }px`,
-				marginBottom: 'linked' === marginTypeTablet ? `${ marginTablet }px` : `${ marginBottomTablet }px`,
-				marginLeft: 'linked' === marginTypeTablet ? `${ marginTablet }px` : `${ marginLeftTablet }px`
+				marginBottom: 'linked' === marginTypeTablet ? `${ marginTablet }px` : `${ marginBottomTablet }px`
 			};
 		}
 
@@ -508,9 +474,7 @@ registerBlockType( 'themeisle-blocks/advanced-column', {
 				paddingBottom: 'linked' === paddingTypeMobile ? `${ paddingMobile }px` : `${ paddingBottomMobile }px`,
 				paddingLeft: 'linked' === paddingTypeMobile ? `${ paddingMobile }px` : `${ paddingLeftMobile }px`,
 				marginTop: 'linked' === marginTypeMobile ? `${ marginMobile }px` : `${ marginTopMobile }px`,
-				marginRight: 'linked' === marginTypeMobile ? `${ marginMobile }px` : `${ marginRightMobile }px`,
-				marginBottom: 'linked' === marginTypeMobile ? `${ marginMobile }px` : `${ marginBottomMobile }px`,
-				marginLeft: 'linked' === marginTypeMobile ? `${ marginMobile }px` : `${ marginLeftMobile }px`
+				marginBottom: 'linked' === marginTypeMobile ? `${ marginMobile }px` : `${ marginBottomMobile }px`
 			};
 		}
 
@@ -615,62 +579,72 @@ registerBlockType( 'themeisle-blocks/advanced-column', {
 		};
 
 		const changePadding = value => {
-			if ( 'desktop' === paddingViewType ) {
-				props.setAttributes({ padding: value });
-			}
-			if ( 'tablet' === paddingViewType ) {
-				props.setAttributes({ paddingTablet: value });
-			}
-			if ( 'mobile' === paddingViewType ) {
-				props.setAttributes({ paddingMobile: value });
+			if ( 0 <= value && 500 >= value ) {
+				if ( 'desktop' === paddingViewType ) {
+					props.setAttributes({ padding: value });
+				}
+				if ( 'tablet' === paddingViewType ) {
+					props.setAttributes({ paddingTablet: value });
+				}
+				if ( 'mobile' === paddingViewType ) {
+					props.setAttributes({ paddingMobile: value });
+				}
 			}
 		};
 
 		const changePaddingTop = value => {
-			if ( 'desktop' === paddingViewType ) {
-				props.setAttributes({ paddingTop: value });
-			}
-			if ( 'tablet' === paddingViewType ) {
-				props.setAttributes({ paddingTopTablet: value });
-			}
-			if ( 'mobile' === paddingViewType ) {
-				props.setAttributes({ paddingTopMobile: value });
+			if ( 0 <= value && 500 >= value ) {
+				if ( 'desktop' === paddingViewType ) {
+					props.setAttributes({ paddingTop: value });
+				}
+				if ( 'tablet' === paddingViewType ) {
+					props.setAttributes({ paddingTopTablet: value });
+				}
+				if ( 'mobile' === paddingViewType ) {
+					props.setAttributes({ paddingTopMobile: value });
+				}
 			}
 		};
 
 		const changePaddingRight = value => {
-			if ( 'desktop' === paddingViewType ) {
-				props.setAttributes({ paddingRight: value });
-			}
-			if ( 'tablet' === paddingViewType ) {
-				props.setAttributes({ paddingRightTablet: value });
-			}
-			if ( 'mobile' === paddingViewType ) {
-				props.setAttributes({ paddingRightMobile: value });
+			if ( 0 <= value && 500 >= value ) {
+				if ( 'desktop' === paddingViewType ) {
+					props.setAttributes({ paddingRight: value });
+				}
+				if ( 'tablet' === paddingViewType ) {
+					props.setAttributes({ paddingRightTablet: value });
+				}
+				if ( 'mobile' === paddingViewType ) {
+					props.setAttributes({ paddingRightMobile: value });
+				}
 			}
 		};
 
 		const changePaddingBottom = value => {
-			if ( 'desktop' === paddingViewType ) {
-				props.setAttributes({ paddingBottom: value });
-			}
-			if ( 'tablet' === paddingViewType ) {
-				props.setAttributes({ paddingBottomTablet: value });
-			}
-			if ( 'mobile' === paddingViewType ) {
-				props.setAttributes({ paddingBottomMobile: value });
+			if ( 0 <= value && 500 >= value ) {
+				if ( 'desktop' === paddingViewType ) {
+					props.setAttributes({ paddingBottom: value });
+				}
+				if ( 'tablet' === paddingViewType ) {
+					props.setAttributes({ paddingBottomTablet: value });
+				}
+				if ( 'mobile' === paddingViewType ) {
+					props.setAttributes({ paddingBottomMobile: value });
+				}
 			}
 		};
 
 		const changePaddingLeft = value => {
-			if ( 'desktop' === paddingViewType ) {
-				props.setAttributes({ paddingLeft: value });
-			}
-			if ( 'tablet' === paddingViewType ) {
-				props.setAttributes({ paddingLeftTablet: value });
-			}
-			if ( 'mobile' === paddingViewType ) {
-				props.setAttributes({ paddingLeftMobile: value });
+			if ( 0 <= value && 500 >= value ) {
+				if ( 'desktop' === paddingViewType ) {
+					props.setAttributes({ paddingLeft: value });
+				}
+				if ( 'tablet' === paddingViewType ) {
+					props.setAttributes({ paddingLeftTablet: value });
+				}
+				if ( 'mobile' === paddingViewType ) {
+					props.setAttributes({ paddingLeftMobile: value });
+				}
 			}
 		};
 
@@ -687,62 +661,44 @@ registerBlockType( 'themeisle-blocks/advanced-column', {
 		};
 
 		const changeMargin = value => {
-			if ( 'desktop' === marginViewType ) {
-				props.setAttributes({ margin: value });
-			}
-			if ( 'tablet' === marginViewType ) {
-				props.setAttributes({ marginTablet: value });
-			}
-			if ( 'mobile' === marginViewType ) {
-				props.setAttributes({ marginMobile: value });
+			if ( -500 <= value && 500 >= value ) {
+				if ( 'desktop' === marginViewType ) {
+					props.setAttributes({ margin: value });
+				}
+				if ( 'tablet' === marginViewType ) {
+					props.setAttributes({ marginTablet: value });
+				}
+				if ( 'mobile' === marginViewType ) {
+					props.setAttributes({ marginMobile: value });
+				}
 			}
 		};
 
 		const changeMarginTop = value => {
-			if ( 'desktop' === marginViewType ) {
-				props.setAttributes({ marginTop: value });
-			}
-			if ( 'tablet' === marginViewType ) {
-				props.setAttributes({ marginTopTablet: value });
-			}
-			if ( 'mobile' === marginViewType ) {
-				props.setAttributes({ marginTopMobile: value });
-			}
-		};
-
-		const changeMarginRight = value => {
-			if ( 'desktop' === marginViewType ) {
-				props.setAttributes({ marginRight: value });
-			}
-			if ( 'tablet' === marginViewType ) {
-				props.setAttributes({ marginRightTablet: value });
-			}
-			if ( 'mobile' === marginViewType ) {
-				props.setAttributes({ marginRightMobile: value });
+			if ( -500 <= value && 500 >= value ) {
+				if ( 'desktop' === marginViewType ) {
+					props.setAttributes({ marginTop: value });
+				}
+				if ( 'tablet' === marginViewType ) {
+					props.setAttributes({ marginTopTablet: value });
+				}
+				if ( 'mobile' === marginViewType ) {
+					props.setAttributes({ marginTopMobile: value });
+				}
 			}
 		};
 
 		const changeMarginBottom = value => {
-			if ( 'desktop' === marginViewType ) {
-				props.setAttributes({ marginBottom: value });
-			}
-			if ( 'tablet' === marginViewType ) {
-				props.setAttributes({ marginBottomTablet: value });
-			}
-			if ( 'mobile' === marginViewType ) {
-				props.setAttributes({ marginBottomMobile: value });
-			}
-		};
-
-		const changeMarginLeft = value => {
-			if ( 'desktop' === marginViewType ) {
-				props.setAttributes({ marginLeft: value });
-			}
-			if ( 'tablet' === marginViewType ) {
-				props.setAttributes({ marginLeftTablet: value });
-			}
-			if ( 'mobile' === marginViewType ) {
-				props.setAttributes({ marginLeftMobile: value });
+			if ( -500 <= value && 500 >= value ) {
+				if ( 'desktop' === marginViewType ) {
+					props.setAttributes({ marginBottom: value });
+				}
+				if ( 'tablet' === marginViewType ) {
+					props.setAttributes({ marginBottomTablet: value });
+				}
+				if ( 'mobile' === marginViewType ) {
+					props.setAttributes({ marginBottomMobile: value });
+				}
 			}
 		};
 
@@ -1046,19 +1002,6 @@ registerBlockType( 'themeisle-blocks/advanced-column', {
 									/>
 
 									<RangeControl
-										label={ __( 'Margin Right' ) }
-										beforeIcon="arrow-right"
-										value={
-											( 'desktop' === marginViewType ) && marginRight ||
-											( 'tablet' === marginViewType ) && marginRightTablet ||
-											( 'mobile' === marginViewType ) && marginRightMobile
-										}
-										onChange={ changeMarginRight }
-										min={ -1000 }
-										max={ 1000 }
-									/>
-
-									<RangeControl
 										label={ __( 'Margin Bottom' ) }
 										beforeIcon="arrow-down"
 										value={
@@ -1069,19 +1012,6 @@ registerBlockType( 'themeisle-blocks/advanced-column', {
 										onChange={ changeMarginBottom }
 										min={ -500 }
 										max={ 500 }
-									/>
-
-									<RangeControl
-										label={ __( 'Margin Left' ) }
-										beforeIcon="arrow-left"
-										value={
-											( 'desktop' === marginViewType ) && marginLeft ||
-											( 'tablet' === marginViewType ) && marginLeftTablet ||
-											( 'mobile' === marginViewType ) && marginLeftMobile
-										}
-										onChange={ changeMarginLeft }
-										min={ -1000 }
-										max={ 1000 }
 									/>
 								</SizeControl>
 							</PanelBody>
@@ -1412,7 +1342,7 @@ registerBlockType( 'themeisle-blocks/advanced-column', {
 										</Fragment>
 
 										<ControlPanelControl
-											label={ 'Shadow Properties' }
+											label={ 'Border Shadow' }
 										>
 
 											<RangeControl

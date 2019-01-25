@@ -9,7 +9,7 @@ import classnames from 'classnames';
  */
 import './editor.scss';
 
-import { columnsIcon } from '../../../utils/icons.js';
+import { themeisleIcon } from '../../../utils/icons.js';
 
 /**
  * WordPress dependencies...
@@ -26,12 +26,14 @@ const { apiFetch } = wp;
 const {
 	Button,
 	Dashicon,
+	Dropdown,
 	Icon,
 	TextControl,
 	Tooltip,
+	MenuGroup,
+	MenuItem,
 	Modal,
 	Notice,
-	SelectControl,
 	Spinner
 } = wp.components;
 
@@ -53,13 +55,12 @@ class Library extends Component {
 		this.selectCategory = this.selectCategory.bind( this );
 		this.changeSearch = this.changeSearch.bind( this );
 		this.importTemplate = this.importTemplate.bind( this );
-		this.getOptions = this.getOptions.bind( this );
 
 		this.state = {
 			tab: 'block',
 			isLoaded: false,
 			isError: false,
-			selectedCategory: 'all',
+			selectedCategory: null,
 			search: '',
 			blocksCategories: [],
 			templateCategories: [],
@@ -103,7 +104,7 @@ class Library extends Component {
 	changeTab( value ) {
 		this.setState({
 			tab: value,
-			selectedCategory: 'all',
+			selectedCategory: null,
 			search: ''
 		});
 	}
@@ -147,27 +148,7 @@ class Library extends Component {
 		}
 	}
 
-	getOptions() {
-		let categories = {};
-
-		categories = ( 'block' === this.state.tab ? this.state.blocksCategories : this.state.templateCategories ).map( i => {
-			return i = {
-				label: startCase( toLower( i ) ),
-				value: i
-			};
-		});
-
-		const options = [
-			{ label: __( 'All Categories' ), value: 'all' },
-			...categories
-		];
-
-		return options;
-	}
-
 	render() {
-		const options = this.getOptions();
-
 		return (
 			<Modal
 				className="themeisle-library-modal"
@@ -175,67 +156,97 @@ class Library extends Component {
 				isDismissable={ false }
 				shouldCloseOnClickOutside={ false }
 			>
-				<div className="library-modal-control-panel">
-					<div className="library-modal-header">
-						<div className="library-modal-header-logo">
-							<div className="library-modal-header-tabs-button">
-								<Icon icon={ columnsIcon } />
-							</div>
+				<div className="library-modal-header">
+					<div className="library-modal-header-logo">
+						<div className="library-modal-header-tabs-button">
+							<Icon icon={ themeisleIcon } />
 						</div>
+					</div>
 
-						<div className="library-modal-header-tabs">
+					<div className="library-modal-header-tabs">
+						<Button
+							className={ classnames(
+								'library-modal-header-tabs-button',
+								{ 'is-selected': 'block' === this.state.tab }
+							)}
+							onClick={ () => this.changeTab( 'block' ) }
+						>
+							<Dashicon icon="screenoptions" />
+							{ __( 'Blocks' ) }
+						</Button>
+
+						<Button
+							className={ classnames(
+								'library-modal-header-tabs-button',
+								{ 'is-selected': 'template' === this.state.tab }
+							)}
+							onClick={ () => this.changeTab( 'template' ) }
+						>
+							<Dashicon icon="editor-table" />
+							{ __( 'Templates' ) }
+						</Button>
+					</div>
+
+					<div className="library-modal-header-actions">
+						<Tooltip text={ __( 'Close' ) }>
 							<Button
-								className={ classnames(
-									'library-modal-header-tabs-button',
-									{ 'is-selected': 'block' === this.state.tab }
-								)}
-								onClick={ () => this.changeTab( 'block' ) }
+								className="library-modal-header-tabs-button"
+								aria-label={ __( 'Close settings' ) }
+								onClick={ this.props.close }
 							>
-								<Dashicon icon="screenoptions" />
-								{ __( 'Blocks' ) }
+								<Dashicon icon="no-alt" />
 							</Button>
+						</Tooltip>
+					</div>
+				</div>
 
+				<div className="library-modal-actions">
+					<Dropdown
+						className="library-modal-category-control"
+						contentClassName="library-modal-category-selector"
+						position="bottom center"
+						renderToggle={ ({ isOpen, onToggle }) => (
 							<Button
-								className={ classnames(
-									'library-modal-header-tabs-button',
-									{ 'is-selected': 'template' === this.state.tab }
-								)}
-								onClick={ () => this.changeTab( 'template' ) }
+								isLarge
+								onClick={ onToggle }
+								aria-expanded={ isOpen }
 							>
-								<Dashicon icon="editor-table" />
-								{ __( 'Templates' ) }
+								{ null === this.state.selectedCategory ? __( 'All Categories' ) : startCase( toLower( this.state.selectedCategory ) ) }
 							</Button>
-						</div>
-
-						<div className="library-modal-header-actions">
-							<Tooltip text={ __( 'Close' ) }>
-								<Button
-									className="library-modal-header-tabs-button"
-									aria-label={ __( 'Close settings' ) }
-									onClick={ this.props.close }
+						) }
+						renderContent={ ({ onToggle }) => (
+							<MenuGroup label={ __( 'Categories' ) }>
+								<MenuItem
+									icon={ null === this.state.selectedCategory && 'yes' }
+									onClick={ () => {
+										onToggle();
+										this.selectCategory( null );
+									}}
 								>
-									<Dashicon icon="no-alt" />
-								</Button>
-							</Tooltip>
-						</div>
-					</div>
-
-					<div className="library-modal-actions">
-						<SelectControl
-							className="library-modal-category-control"
-							value={ 'all' === this.state.selectedCategory ? 'all' : this.state.selectedCategory }
-							onChange={ this.selectCategory }
-							options={ options }
-						/>
-
-						<TextControl
-							type="text"
-							value={ this.state.search || '' }
-							placeholder={ __( 'Search' ) }
-							className="library-modal-search-control"
-							onChange={ this.changeSearch }
-						/>
-					</div>
+									{ __( 'All Categories' ) }
+								</MenuItem>
+								{ ( 'block' === this.state.tab ? this.state.blocksCategories : this.state.templateCategories ).map( i => {
+									return (
+										<MenuItem
+											icon={ i === this.state.selectedCategory && 'yes' }
+											onClick={ () => {
+												onToggle();
+												this.selectCategory( i );
+											}}
+										>
+											{ startCase( toLower( i ) ) }
+										</MenuItem>
+									);
+								})}
+							</MenuGroup>
+						) }
+					/>
+					<TextControl
+						type="text"
+						value={ this.state.search || '' }
+						placeholder={ __( 'Search' ) }
+						onChange={ this.changeSearch }
+					/>
 				</div>
 
 				{ this.state.isError && (
@@ -254,7 +265,7 @@ class Library extends Component {
 						{ this.state.data.map( i => {
 							if (
 								( i.template_url ) &&
-								( 'all' === this.state.selectedCategory || i.categories && i.categories.includes( this.state.selectedCategory ) ) &&
+								( null === this.state.selectedCategory || i.categories && i.categories.includes( this.state.selectedCategory ) ) &&
 								( ! this.state.search || i.keywords && i.keywords.some( o => o.toLowerCase().includes( this.state.search.toLowerCase() ) ) ) &&
 								( this.state.tab === i.type )
 							) {

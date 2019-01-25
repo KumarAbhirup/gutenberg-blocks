@@ -176,15 +176,15 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 		},
 		marginType: {
 			type: 'string',
-			default: 'unlinked'
+			default: 'linked'
 		},
 		marginTypeTablet: {
 			type: 'string',
-			default: 'unlinked'
+			default: 'linked'
 		},
 		marginTypeMobile: {
 			type: 'string',
-			default: 'unlinked'
+			default: 'linked'
 		},
 		margin: {
 			type: 'number',
@@ -735,7 +735,7 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 			columnsHTMLTag
 		} = props.attributes;
 
-		if ( id === undefined || id.substr( id.length - 8 ) !== props.clientId.substr( 0, 8 ) ) {
+		if ( id === undefined ) {
 			const instanceId = `wp-block-themeisle-blocks-advanced-columns-${ props.clientId.substr( 0, 8 ) }`;
 			props.setAttributes({ id: instanceId });
 		}
@@ -858,8 +858,7 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 			...borderStyle,
 			...borderRadiusStyle,
 			...boxShadowStyle,
-			alignItems: horizontalAlign,
-			justifyContent: verticalAlign
+			alignItems: horizontalAlign
 		};
 
 		if ( 'color' === backgroundOverlayType ) {
@@ -915,7 +914,8 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 			`has-desktop-${ layout }-layout`,
 			`has-tablet-${ layoutTablet }-layout`,
 			`has-mobile-${ layoutMobile }-layout`,
-			`has-${ columnsGap }-gap`
+			`has-${ columnsGap }-gap`,
+			`has-vertical-${ verticalAlign }`
 		);
 
 		const ALLOWED_BLOCKS = [ 'themeisle-blocks/advanced-columns' ];
@@ -1106,62 +1106,72 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 		};
 
 		const changePadding = value => {
-			if ( 'desktop' === paddingViewType ) {
-				props.setAttributes({ padding: value });
-			}
-			if ( 'tablet' === paddingViewType ) {
-				props.setAttributes({ paddingTablet: value });
-			}
-			if ( 'mobile' === paddingViewType ) {
-				props.setAttributes({ paddingMobile: value });
+			if ( 0 <= value && 500 >= value ) {
+				if ( 'desktop' === paddingViewType ) {
+					props.setAttributes({ padding: value });
+				}
+				if ( 'tablet' === paddingViewType ) {
+					props.setAttributes({ paddingTablet: value });
+				}
+				if ( 'mobile' === paddingViewType ) {
+					props.setAttributes({ paddingMobile: value });
+				}
 			}
 		};
 
 		const changePaddingTop = value => {
-			if ( 'desktop' === paddingViewType ) {
-				props.setAttributes({ paddingTop: value });
-			}
-			if ( 'tablet' === paddingViewType ) {
-				props.setAttributes({ paddingTopTablet: value });
-			}
-			if ( 'mobile' === paddingViewType ) {
-				props.setAttributes({ paddingTopMobile: value });
+			if ( 0 <= value && 500 >= value ) {
+				if ( 'desktop' === paddingViewType ) {
+					props.setAttributes({ paddingTop: value });
+				}
+				if ( 'tablet' === paddingViewType ) {
+					props.setAttributes({ paddingTopTablet: value });
+				}
+				if ( 'mobile' === paddingViewType ) {
+					props.setAttributes({ paddingTopMobile: value });
+				}
 			}
 		};
 
 		const changePaddingRight = value => {
-			if ( 'desktop' === paddingViewType ) {
-				props.setAttributes({ paddingRight: value });
-			}
-			if ( 'tablet' === paddingViewType ) {
-				props.setAttributes({ paddingRightTablet: value });
-			}
-			if ( 'mobile' === paddingViewType ) {
-				props.setAttributes({ paddingRightMobile: value });
+			if ( 0 <= value && 500 >= value ) {
+				if ( 'desktop' === paddingViewType ) {
+					props.setAttributes({ paddingRight: value });
+				}
+				if ( 'tablet' === paddingViewType ) {
+					props.setAttributes({ paddingRightTablet: value });
+				}
+				if ( 'mobile' === paddingViewType ) {
+					props.setAttributes({ paddingRightMobile: value });
+				}
 			}
 		};
 
 		const changePaddingBottom = value => {
-			if ( 'desktop' === paddingViewType ) {
-				props.setAttributes({ paddingBottom: value });
-			}
-			if ( 'tablet' === paddingViewType ) {
-				props.setAttributes({ paddingBottomTablet: value });
-			}
-			if ( 'mobile' === paddingViewType ) {
-				props.setAttributes({ paddingBottomMobile: value });
+			if ( 0 <= value && 500 >= value ) {
+				if ( 'desktop' === paddingViewType ) {
+					props.setAttributes({ paddingBottom: value });
+				}
+				if ( 'tablet' === paddingViewType ) {
+					props.setAttributes({ paddingBottomTablet: value });
+				}
+				if ( 'mobile' === paddingViewType ) {
+					props.setAttributes({ paddingBottomMobile: value });
+				}
 			}
 		};
 
 		const changePaddingLeft = value => {
-			if ( 'desktop' === paddingViewType ) {
-				props.setAttributes({ paddingLeft: value });
-			}
-			if ( 'tablet' === paddingViewType ) {
-				props.setAttributes({ paddingLeftTablet: value });
-			}
-			if ( 'mobile' === paddingViewType ) {
-				props.setAttributes({ paddingLeftMobile: value });
+			if ( 0 <= value && 500 >= value ) {
+				if ( 'desktop' === paddingViewType ) {
+					props.setAttributes({ paddingLeft: value });
+				}
+				if ( 'tablet' === paddingViewType ) {
+					props.setAttributes({ paddingLeftTablet: value });
+				}
+				if ( 'mobile' === paddingViewType ) {
+					props.setAttributes({ paddingLeftMobile: value });
+				}
 			}
 		};
 
@@ -1178,38 +1188,44 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 		};
 
 		const changeMargin = value => {
-			if ( 'desktop' === marginViewType ) {
-				props.setAttributes({ margin: value });
-			}
-			if ( 'tablet' === marginViewType ) {
-				props.setAttributes({ marginTablet: value });
-			}
-			if ( 'mobile' === marginViewType ) {
-				props.setAttributes({ marginMobile: value });
+			if ( -500 <= value && 500 >= value ) {
+				if ( 'desktop' === marginViewType ) {
+					props.setAttributes({ margin: value });
+				}
+				if ( 'tablet' === marginViewType ) {
+					props.setAttributes({ marginTablet: value });
+				}
+				if ( 'mobile' === marginViewType ) {
+					props.setAttributes({ marginMobile: value });
+				}
 			}
 		};
 
 		const changeMarginTop = value => {
-			if ( 'desktop' === marginViewType ) {
-				props.setAttributes({ marginTop: value });
-			}
-			if ( 'tablet' === marginViewType ) {
-				props.setAttributes({ marginTopTablet: value });
-			}
-			if ( 'mobile' === marginViewType ) {
-				props.setAttributes({ marginTopMobile: value });
+			if ( -500 <= value && 500 >= value ) {
+				if ( 'desktop' === marginViewType ) {
+					props.setAttributes({ marginTop: value });
+				}
+				if ( 'tablet' === marginViewType ) {
+					props.setAttributes({ marginTopTablet: value });
+				}
+				if ( 'mobile' === marginViewType ) {
+					props.setAttributes({ marginTopMobile: value });
+				}
 			}
 		};
 
 		const changeMarginBottom = value => {
-			if ( 'desktop' === marginViewType ) {
-				props.setAttributes({ marginBottom: value });
-			}
-			if ( 'tablet' === marginViewType ) {
-				props.setAttributes({ marginBottomTablet: value });
-			}
-			if ( 'mobile' === marginViewType ) {
-				props.setAttributes({ marginBottomMobile: value });
+			if ( -500 <= value && 500 >= value ) {
+				if ( 'desktop' === marginViewType ) {
+					props.setAttributes({ marginBottom: value });
+				}
+				if ( 'tablet' === marginViewType ) {
+					props.setAttributes({ marginBottomTablet: value });
+				}
+				if ( 'mobile' === marginViewType ) {
+					props.setAttributes({ marginBottomMobile: value });
+				}
 			}
 		};
 
@@ -1244,14 +1260,16 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 		getColumnsHeightCustom = getColumnsHeightCustom();
 
 		const changeColumnsHeightCustom = value => {
-			if ( 'desktop' === heightViewType ) {
-				props.setAttributes({ columnsHeightCustom: value });
-			}
-			if ( 'tablet' === heightViewType ) {
-				props.setAttributes({ columnsHeightCustomTablet: value });
-			}
-			if ( 'mobile' === heightViewType ) {
-				props.setAttributes({ columnsHeightCustomMobile: value });
+			if ( 0 <= value && 1000 >= value ) {
+				if ( 'desktop' === heightViewType ) {
+					props.setAttributes({ columnsHeightCustom: value });
+				}
+				if ( 'tablet' === heightViewType ) {
+					props.setAttributes({ columnsHeightCustomTablet: value });
+				}
+				if ( 'mobile' === heightViewType ) {
+					props.setAttributes({ columnsHeightCustomMobile: value });
+				}
 			}
 		};
 
@@ -1312,7 +1330,9 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 		};
 
 		const changeBackgroundGradientFirstLocation = value => {
-			props.setAttributes({ backgroundGradientFirstLocation: value });
+			if ( 0 <= value && 100 >= value ) {
+				props.setAttributes({ backgroundGradientFirstLocation: value });
+			}
 		};
 
 		const changeBackgroundGradientSecondColor = value => {
@@ -1320,7 +1340,9 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 		};
 
 		const changeBackgroundGradientSecondLocation = value => {
-			props.setAttributes({ backgroundGradientSecondLocation: value });
+			if ( 0 <= value && 100 >= value ) {
+				props.setAttributes({ backgroundGradientSecondLocation: value });
+			}
 		};
 
 		const changeBackgroundGradientType = value => {
@@ -1328,7 +1350,9 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 		};
 
 		const changeBackgroundGradientAngle = value => {
-			props.setAttributes({ backgroundGradientAngle: value });
+			if ( 0 <= value && 360 >= value ) {
+				props.setAttributes({ backgroundGradientAngle: value });
+			}
 		};
 
 		const changeBackgroundGradientPosition = value => {
@@ -1336,7 +1360,9 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 		};
 
 		const changeBackgroundOverlayOpacity = value => {
-			props.setAttributes({ backgroundOverlayOpacity: value });
+			if ( 0 <= value && 100 >= value ) {
+				props.setAttributes({ backgroundOverlayOpacity: value });
+			}
 		};
 
 		const changeBackgroundOverlayType = value => {
@@ -1382,7 +1408,9 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 		};
 
 		const changeBackgroundOverlayGradientFirstLocation = value => {
-			props.setAttributes({ backgroundOverlayGradientFirstLocation: value });
+			if ( 0 <= value && 100 >= value ) {
+				props.setAttributes({ backgroundOverlayGradientFirstLocation: value });
+			}
 		};
 
 		const changeBackgroundOverlayGradientSecondColor = value => {
@@ -1390,7 +1418,9 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 		};
 
 		const changeBackgroundOverlayGradientSecondLocation = value => {
-			props.setAttributes({ backgroundOverlayGradientSecondLocation: value });
+			if ( 0 <= value && 100 >= value ) {
+				props.setAttributes({ backgroundOverlayGradientSecondLocation: value });
+			}
 		};
 
 		const changeBackgroundOverlayGradientType = value => {
@@ -1398,7 +1428,9 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 		};
 
 		const changeBackgroundOverlayGradientAngle = value => {
-			props.setAttributes({ backgroundOverlayGradientAngle: value });
+			if ( 0 <= value && 360 >= value ) {
+				props.setAttributes({ backgroundOverlayGradientAngle: value });
+			}
 		};
 
 		const changeBackgroundOverlayGradientPosition = value => {
@@ -1406,27 +1438,39 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 		};
 
 		const changebackgroundOverlayFilterBlur = value => {
-			props.setAttributes({ backgroundOverlayFilterBlur: value });
+			if ( 0 <= value && 100 >= value ) {
+				props.setAttributes({ backgroundOverlayFilterBlur: value });
+			}
 		};
 
 		const changebackgroundOverlayFilterBrightness = value => {
-			props.setAttributes({ backgroundOverlayFilterBrightness: value });
+			if ( 0 <= value && 100 >= value ) {
+				props.setAttributes({ backgroundOverlayFilterBrightness: value });
+			}
 		};
 
 		const changebackgroundOverlayFilterContrast = value => {
-			props.setAttributes({ backgroundOverlayFilterContrast: value });
+			if ( 0 <= value && 100 >= value ) {
+				props.setAttributes({ backgroundOverlayFilterContrast: value });
+			}
 		};
 
 		const changebackgroundOverlayFilterGrayscale = value => {
-			props.setAttributes({ backgroundOverlayFilterGrayscale: value });
+			if ( 0 <= value && 100 >= value ) {
+				props.setAttributes({ backgroundOverlayFilterGrayscale: value });
+			}
 		};
 
 		const changebackgroundOverlayFilterHue = value => {
-			props.setAttributes({ backgroundOverlayFilterHue: value });
+			if ( 0 <= value && 100 >= value ) {
+				props.setAttributes({ backgroundOverlayFilterHue: value });
+			}
 		};
 
 		const changebackgroundOverlayFilterSaturate = value => {
-			props.setAttributes({ backgroundOverlayFilterSaturate: value });
+			if ( 0 <= value && 100 >= value ) {
+				props.setAttributes({ backgroundOverlayFilterSaturate: value });
+			}
 		};
 
 		const changebackgroundOverlayBlend = value => {
@@ -1438,23 +1482,33 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 		};
 
 		const changeBorder = value => {
-			props.setAttributes({ border: value });
+			if ( 0 <= value && 500 >= value ) {
+				props.setAttributes({ border: value });
+			}
 		};
 
 		const changeBorderTop = value => {
-			props.setAttributes({ borderTop: value });
+			if ( 0 <= value && 500 >= value ) {
+				props.setAttributes({ borderTop: value });
+			}
 		};
 
 		const changeBorderRight = value => {
-			props.setAttributes({ borderRight: value });
+			if ( 0 <= value && 500 >= value ) {
+				props.setAttributes({ borderRight: value });
+			}
 		};
 
 		const changeBorderBottom = value => {
-			props.setAttributes({ borderBottom: value });
+			if ( 0 <= value && 500 >= value ) {
+				props.setAttributes({ borderBottom: value });
+			}
 		};
 
 		const changeBorderLeft = value => {
-			props.setAttributes({ borderLeft: value });
+			if ( 0 <= value && 500 >= value ) {
+				props.setAttributes({ borderLeft: value });
+			}
 		};
 
 		const changeBorderColor = value => {
@@ -1466,23 +1520,33 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 		};
 
 		const changeBorderRadius = value => {
-			props.setAttributes({ borderRadius: value });
+			if ( 0 <= value && 500 >= value ) {
+				props.setAttributes({ borderRadius: value });
+			}
 		};
 
 		const changeBorderRadiusTop = value => {
-			props.setAttributes({ borderRadiusTop: value });
+			if ( 0 <= value && 500 >= value ) {
+				props.setAttributes({ borderRadiusTop: value });
+			}
 		};
 
 		const changeBorderRadiusRight = value => {
-			props.setAttributes({ borderRadiusRight: value });
+			if ( 0 <= value && 500 >= value ) {
+				props.setAttributes({ borderRadiusRight: value });
+			}
 		};
 
 		const changeBorderRadiusBottom = value => {
-			props.setAttributes({ borderRadiusBottom: value });
+			if ( 0 <= value && 500 >= value ) {
+				props.setAttributes({ borderRadiusBottom: value });
+			}
 		};
 
 		const changeBorderRadiusLeft = value => {
-			props.setAttributes({ borderRadiusLeft: value });
+			if ( 0 <= value && 500 >= value ) {
+				props.setAttributes({ borderRadiusLeft: value });
+			}
 		};
 
 		const changeBoxShadow = () => {
@@ -1494,23 +1558,33 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 		};
 
 		const changeBoxShadowColorOpacity = value => {
-			props.setAttributes({ boxShadowColorOpacity: value });
+			if ( 0 <= value && 100 >= value ) {
+				props.setAttributes({ boxShadowColorOpacity: value });
+			}
 		};
 
 		const changeBoxShadowBlur = value => {
-			props.setAttributes({ boxShadowBlur: value });
+			if ( 0 <= value && 100 >= value ) {
+				props.setAttributes({ boxShadowBlur: value });
+			}
 		};
 
 		const changeBoxShadowSpread = value => {
-			props.setAttributes({ boxShadowSpread: value });
+			if ( -100 <= value && 100 >= value ) {
+				props.setAttributes({ boxShadowSpread: value });
+			}
 		};
 
 		const changeBoxShadowHorizontal = value => {
-			props.setAttributes({ boxShadowHorizontal: value });
+			if ( -100 <= value && 100 >= value ) {
+				props.setAttributes({ boxShadowHorizontal: value });
+			}
 		};
 
 		const changeBoxShadowVertical = value => {
-			props.setAttributes({ boxShadowVertical: value });
+			if ( -100 <= value && 100 >= value ) {
+				props.setAttributes({ boxShadowVertical: value });
+			}
 		};
 
 		let getDividerType = () => {
@@ -1667,31 +1741,33 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 		getDividerBottomWidth = getDividerBottomWidth();
 
 		const changeDividerWidth = value => {
-			if ( 'top' == dividerViewType ) {
-				if ( 'desktop' == dividerWidthViewType ) {
-					props.setAttributes({ dividerTopWidth: value });
+			if ( 0 <= value && 500 >= value ) {
+				if ( 'top' == dividerViewType ) {
+					if ( 'desktop' == dividerWidthViewType ) {
+						props.setAttributes({ dividerTopWidth: value });
+					}
+
+					if ( 'tablet' == dividerWidthViewType ) {
+						props.setAttributes({ dividerTopWidthTablet: value });
+					}
+
+					if ( 'mobile' == dividerWidthViewType ) {
+						props.setAttributes({ dividerTopWidthMobile: value });
+					}
 				}
 
-				if ( 'tablet' == dividerWidthViewType ) {
-					props.setAttributes({ dividerTopWidthTablet: value });
-				}
+				if ( 'bottom' == dividerViewType ) {
+					if ( 'desktop' == dividerWidthViewType ) {
+						props.setAttributes({ dividerBottomWidth: value });
+					}
 
-				if ( 'mobile' == dividerWidthViewType ) {
-					props.setAttributes({ dividerTopWidthMobile: value });
-				}
-			}
+					if ( 'tablet' == dividerWidthViewType ) {
+						props.setAttributes({ dividerBottomWidthTablet: value });
+					}
 
-			if ( 'bottom' == dividerViewType ) {
-				if ( 'desktop' == dividerWidthViewType ) {
-					props.setAttributes({ dividerBottomWidth: value });
-				}
-
-				if ( 'tablet' == dividerWidthViewType ) {
-					props.setAttributes({ dividerBottomWidthTablet: value });
-				}
-
-				if ( 'mobile' == dividerWidthViewType ) {
-					props.setAttributes({ dividerBottomWidthMobile: value });
+					if ( 'mobile' == dividerWidthViewType ) {
+						props.setAttributes({ dividerBottomWidthMobile: value });
+					}
 				}
 			}
 		};
@@ -1773,31 +1849,33 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 		getDividerBottomHeight = getDividerBottomHeight();
 
 		const changeDividerHeight = value => {
-			if ( 'top' == dividerViewType ) {
-				if ( 'desktop' == dividerHeightViewType ) {
-					props.setAttributes({ dividerTopHeight: value });
+			if ( 0 <= value && 500 >= value ) {
+				if ( 'top' == dividerViewType ) {
+					if ( 'desktop' == dividerHeightViewType ) {
+						props.setAttributes({ dividerTopHeight: value });
+					}
+
+					if ( 'tablet' == dividerHeightViewType ) {
+						props.setAttributes({ dividerTopHeightTablet: value });
+					}
+
+					if ( 'mobile' == dividerHeightViewType ) {
+						props.setAttributes({ dividerTopHeightMobile: value });
+					}
 				}
 
-				if ( 'tablet' == dividerHeightViewType ) {
-					props.setAttributes({ dividerTopHeightTablet: value });
-				}
+				if ( 'bottom' == dividerViewType ) {
+					if ( 'desktop' == dividerHeightViewType ) {
+						props.setAttributes({ dividerBottomHeight: value });
+					}
 
-				if ( 'mobile' == dividerHeightViewType ) {
-					props.setAttributes({ dividerTopHeightMobile: value });
-				}
-			}
+					if ( 'tablet' == dividerHeightViewType ) {
+						props.setAttributes({ dividerBottomHeightTablet: value });
+					}
 
-			if ( 'bottom' == dividerViewType ) {
-				if ( 'desktop' == dividerHeightViewType ) {
-					props.setAttributes({ dividerBottomHeight: value });
-				}
-
-				if ( 'tablet' == dividerHeightViewType ) {
-					props.setAttributes({ dividerBottomHeightTablet: value });
-				}
-
-				if ( 'mobile' == dividerHeightViewType ) {
-					props.setAttributes({ dividerBottomHeightMobile: value });
+					if ( 'mobile' == dividerHeightViewType ) {
+						props.setAttributes({ dividerBottomHeightMobile: value });
+					}
 				}
 			}
 		};
@@ -2037,6 +2115,7 @@ registerBlockType( 'themeisle-blocks/advanced-columns', {
 								<RangeControl
 									label={ __( 'Maximum Content Width' ) }
 									value={ columnsWidth || '' }
+									allowReset={ true }
 									onChange={ changeColumnsWidth }
 									min={ 0 }
 									max={ 1200 }

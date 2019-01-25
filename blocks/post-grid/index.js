@@ -287,7 +287,7 @@ registerBlockType( 'themeisle-blocks/posts-grid', {
 									) }
 									<h3 className="grid-content-title">
 										<a href={ post.link }>
-											{ unescapeHTML( post.title.rendered ) }
+											{ post.title.rendered }
 										</a>
 									</h3>
 									{ ( displayDate || displayAuthor ) && (
